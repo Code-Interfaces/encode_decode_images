@@ -1,32 +1,32 @@
-# Image Pixels: A Beginner's Guide to Image Processing
+# Encoding/Decoding Image
 
-This tutorial will help you understand how images are represented in computers through a simple Python project. Perfect for complete beginners - no prior programming experience required!
-
-## What You'll Learn
-
-- How images are stored as pixels in computers
-- The basics of working with image data in Python
-- How to visualize individual pixels from an image
-- Understanding color channels and pixel values
-- Using utility functions to make code cleaner
+This is a simple introduction to understanding how images are encoded and decoded by computers. We will be using the OpenCV library and some utility functions I have made available to you in this repository to inspect images.
 
 ## Getting Started
+
+### Clone the Repository
+
+Open your terminal and navigate to a directory where you want to store this project. Then, run the following commands:
+
+```bash
+git clone https://github.com/Code-Interfaces/encode_decode_images.git
+cd encode_decode_images
+```
 
 ### Prerequisites
 
 Make sure you have the following installed:
 
 - Python 3.6 or higher
+- Set up a virtual environment (optional but recommended)
+  - Create: `python -m venv env`
+  - Activate:
+    - Windows: `.\env\Scripts\activate`
+    - macOS/Linux: `source env/bin/activate`
+  - Deactivate: `deactivate`
 - Required libraries:
   - OpenCV: `pip install opencv-python`
   - NumPy: `pip install numpy`
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/encode_decode_images.git
-cd encode_decode_images
-```
 
 ### Project Structure
 
@@ -46,11 +46,6 @@ encode_decode_images/
 ### Add a Test Image
 
 Before running the code, place a JPEG image into the `image` folder and name it `image.jpeg`. You can use any image from your computer.
-
-```bash
-mkdir -p image
-# Copy an image to the folder and name it image.jpeg
-```
 
 ## Understanding How Images Work
 
@@ -178,15 +173,6 @@ When you look at the visualization:
 - The colors you see are exactly what the computer "sees" at each pixel location
 - The numbers printed to the console are the actual numeric values that create those colors
 
-## Next Steps
-
-Once you're comfortable with this code, you could:
-
-1. Create a function to show the RGB histogram of the image
-2. Add simple filters to modify the image (like grayscale conversion)
-3. Extract and visualize specific regions of an image
-4. Try edge detection or other basic image processing techniques
-
 ## Conclusion
 
 Congratulations! You now understand the basics of how images are represented as pixels in computers. This foundation will help you explore more advanced image processing and computer vision topics.
@@ -196,5 +182,3 @@ Remember:
 - Images are just arrays of numbers
 - OpenCV uses BGR (Blue, Green, Red) order for color values
 - Breaking down problems into smaller functions makes code easier to understand
-
-Happy coding!
