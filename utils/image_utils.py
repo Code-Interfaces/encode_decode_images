@@ -153,151 +153,170 @@ def display_image(image, window_name="Image", wait=True):
 def extract_dominant_colors(image, num_colors=6):
     """
     Extract the dominant colors from an image using K-means clustering.
-    
+
     Args:
         image (numpy.ndarray): Source image
         num_colors (int): Number of dominant colors to extract
-        
+
     Returns:
         list: List of (color, percentage) tuples where color is a BGR array
     """
     # Reshape the image to be a list of pixels
     pixels = image.reshape(-1, 3).astype(np.float32)
-    
+
     # Define criteria and apply kmeans
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    _, labels, centers = cv2.kmeans(pixels, num_colors, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
-    
+    _, labels, centers = cv2.kmeans(
+        pixels, num_colors, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+
     # Convert centers to uint8
     centers = np.uint8(centers)
-    
+
     # Count labels to find most frequent colors
     unique_labels, counts = np.unique(labels, return_counts=True)
-    
+
     # Sort by frequency
     sorted_indices = np.argsort(-counts)  # Negative for descending order
-    
+
     # Calculate percentages
     total_pixels = len(pixels)
     dominant_colors = []
-    
+
     for idx in sorted_indices:
         color = centers[idx].tolist()
         percentage = counts[idx] / total_pixels * 100
         dominant_colors.append((color, percentage))
-    
+
     return dominant_colors
+
 
 def bgr_to_hex(bgr):
     """
     Convert BGR color to hex color string.
-    
+
     Args:
         bgr (list/tuple): BGR color values as [B, G, R]
-        
+
     Returns:
         str: Hex color string in format '#RRGGBB'
     """
     b, g, r = bgr
     return f'#{r:02X}{g:02X}{b:02X}'
 
+
 def rgb_to_hex(rgb):
     """
     Convert RGB color to hex color string.
-    
+
     Args:
         rgb (list/tuple): RGB color values as [R, G, B]
-        
+
     Returns:
         str: Hex color string in format '#RRGGBB'
     """
     r, g, b = rgb
     return f'#{r:02X}{g:02X}{b:02X}'
 
+
 def hex_to_bgr(hex_color):
     """
     Convert hex color string to BGR.
-    
+
     Args:
         hex_color (str): Hex color string in format '#RRGGBB' or 'RRGGBB'
-        
+
     Returns:
         tuple: BGR color values as (B, G, R)
     """
     # Remove '#' if present
     if hex_color.startswith('#'):
         hex_color = hex_color[1:]
-    
+
     # Convert hex to RGB then to BGR
     r = int(hex_color[0:2], 16)
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
-    
+
     return (b, g, r)
+
 
 def hex_to_rgb(hex_color):
     """
     Convert hex color string to RGB.
-    
+
     Args:
         hex_color (str): Hex color string in format '#RRGGBB' or 'RRGGBB'
-        
+
     Returns:
         tuple: RGB color values as (R, G, B)
     """
     # Remove '#' if present
     if hex_color.startswith('#'):
         hex_color = hex_color[1:]
-    
+
     # Convert hex to RGB
     r = int(hex_color[0:2], 16)
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
-    
+
     return (r, g, b)
+
 
 def create_color_palette(colors, cell_size=100):
     """
     Create a visualization of color palette with hex values.
-    
+
     Args:
         colors (list): List of (color, percentage) tuples where color is a BGR array
         cell_size (int): Size of each color cell in pixels
-        
+
     Returns:
         numpy.ndarray: Image showing the color palette
     """
     num_colors = len(colors)
     width = cell_size * num_colors
     height = cell_size
-    
+
     # Create blank image
     palette = np.zeros((height, width, 3), dtype=np.uint8)
-    
+
     for i, (color, percentage) in enumerate(colors):
         # Fill the rectangle with the color
         start_x = i * cell_size
         end_x = start_x + cell_size
-        
+
         # Get hex representation
         hex_color = bgr_to_hex(color)
-        
+
         # Fill rectangle with color
         palette[:, start_x:end_x] = color
-        
+
         # Determine text color for better contrast
         brightness = 0.299 * color[2] + 0.587 * color[1] + 0.114 * color[0]
         text_color = (0, 0, 0) if brightness > 128 else (255, 255, 255)
-        
-        # Add hex value text
-        text_position = (start_x + 10, height // 2)
-        cv2.putText(palette, hex_color, text_position, 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, text_color, 1)
-        
-        # Add percentage below
+
+        # Add hex value text - improved rendering
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        font_scale = 0.5
+        thickness = 1
+
+        # Get text size to center it properly
+        text_size = cv2.getTextSize(hex_color, font, font_scale, thickness)[0]
+        text_x = start_x + (cell_size - text_size[0]) // 2
+        text_y = height // 2 - 10
+
+        # Draw text with anti-aliasing
+        cv2.putText(palette, hex_color, (text_x, text_y),
+                    font, font_scale, text_color, thickness, cv2.LINE_AA)
+
+        # Add percentage text - improved rendering
         percentage_text = f'{percentage:.1f}%'
-        percentage_position = (start_x + 10, height - 20)
-        cv2.putText(palette, percentage_text, percentage_position, 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.4, text_color, 1)
-    
+        perc_text_size = cv2.getTextSize(
+            percentage_text, font, font_scale, thickness)[0]
+        perc_x = start_x + (cell_size - perc_text_size[0]) // 2
+        perc_y = height // 2 + 20
+
+        cv2.putText(palette, percentage_text, (perc_x, perc_y),
+                    font, font_scale, text_color, thickness, cv2.LINE_AA)
+
     return palette
