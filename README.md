@@ -43,7 +43,7 @@ encode_decode_images/
 └── README.md                # This file
 ```
 
-### Add a Test Image
+### Add an Image
 
 Before running the code, place a JPEG image into the `image` folder and name it `image.jpeg`. You can use any image from your computer.
 
