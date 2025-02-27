@@ -173,10 +173,6 @@ When you look at the visualization:
 - The colors you see are exactly what the computer "sees" at each pixel location
 - The numbers printed to the console are the actual numeric values that create those colors
 
-## Conclusion
-
-Congratulations! You now understand the basics of how images are represented as pixels in computers. This foundation will help you explore more advanced image processing and computer vision topics.
-
 Remember:
 
 - Images are just arrays of numbers
