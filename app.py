@@ -13,28 +13,28 @@ if image is None:
 # Step 2: Get image information
 print("\nStep 2: Getting image information")
 info = get_image_info(image)
-print(
-    f"Image size: {info['width']} pixels wide by {info['height']} pixels tall")
-print(
-    f"Color channels: {info['channels']} (This means it's a color image with BGR values)")
-print(f"Data type: {info['dtype']}")
-print(f"Memory size: {info['size_bytes']} bytes")
+# Print out the width, height, channels, data type, and memory size use this syntax: info['key']
+
 
 # Step 3: Look at some pixel values
+# Print out the top-left pixel, one pixel to the right, and one pixel down from the top-left pixel use this syntax: image[y, x]
+# where y is the row index and x is the column index
+# For example, to access the top-left pixel, you would use image[0, 0]
 print("\nStep 3: Let's examine the first few pixels:")
-print(f"Top-left pixel: {image[0, 0]}")
-print(f"One pixel to the right: {image[0, 1]}")
-print(f"One pixel down: {image[1, 0]}")
+
 
 # Step 4: Create a visualization grid
+# Create a visualization grid of the first 9 pixels using the create_pixel_grid function
+# Set grid_size=3, cell_size=100, and randomize=False
 print("\nStep 4: Creating a visualization grid of the first 9 pixels...")
-pixel_grid = create_pixel_grid(
-    image, grid_size=3, cell_size=100, randomize=False)
+
 
 # Step 5: Save and display the result
+# Save the pixel visualization to a file using the save_image function
 print("\nStep 5: Saving and showing the pixel visualization")
 output_path = './image/pixels_enlarged.jpg'
-save_image(pixel_grid, output_path)
 
+
+# Display the pixel visualization using the display_image function
+# Use the output_path './image/pixels_enlarged.jpg' and window name 'First 9 Pixels Enlarged'
 print("\nDisplaying the visualization (press any key to close)")
-display_image(pixel_grid, "First 9 Pixels Enlarged")

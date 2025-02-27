@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import random
-import argparse
 from pathlib import Path
 
 
@@ -179,46 +178,3 @@ class ImageGlitcher:
             random.choice(effects)()
 
         return self
-
-
-def main():
-    parser = argparse.ArgumentParser(description='Glitch images using OpenCV')
-    parser.add_argument('input', help='Path to the input image')
-    parser.add_argument(
-        '--output', '-o', help='Path to save the output image', default='glitched.jpg')
-    parser.add_argument('--effect', '-e', choices=['channel', 'corrupt', 'block', 'wave', 'jpeg', 'sort', 'random'],
-                        default='random', help='Glitch effect to apply')
-    args = parser.parse_args()
-
-    # Create glitcher
-    glitcher = ImageGlitcher(args.input)
-
-    # Apply selected effect
-    if args.effect == 'channel':
-        glitcher.channel_shift(15, 10, 2)
-    elif args.effect == 'corrupt':
-        glitcher.data_corruption(0.02)
-    elif args.effect == 'block':
-        glitcher.block_displacement(32, 30)
-    elif args.effect == 'wave':
-        glitcher.wave_distortion(15, 0.1)
-    elif args.effect == 'jpeg':
-        glitcher.jpeg_artifacts(8)
-    elif args.effect == 'sort':
-        glitcher.pixel_sort(120)
-    else:  # random
-        glitcher.random_glitch()
-
-    # Save result
-    output_path = args.output
-    if Path(output_path).suffix.lower() not in ['.jpg', '.jpeg', '.png', '.bmp']:
-        output_path += '.jpg'
-
-    glitcher.save(output_path)
-
-    # Display result
-    glitcher.display()
-
-
-if __name__ == "__main__":
-    main()
