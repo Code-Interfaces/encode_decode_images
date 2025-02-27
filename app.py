@@ -1,5 +1,5 @@
 # A simple program to visualize image pixels using utility functions
-from utils.image_utils import load_image, get_image_info, create_pixel_grid, save_image, display_image
+from utils.image_utils import load_image, get_image_info, create_pixel_grid, save_image, display_image, create_color_palette
 
 # Step 1: Load the image
 print("Step 1: Loading the image...")
@@ -38,3 +38,26 @@ output_path = './image/pixels_enlarged.jpg'
 # Display the pixel visualization using the display_image function
 # Use the output_path './image/pixels_enlarged.jpg' and window name 'First 9 Pixels Enlarged'
 print("\nDisplaying the visualization (press any key to close)")
+
+
+
+# Extra: You can comment out the code we have written so far from line 13, and we can continue with the following code.
+# Here we will extract the dominant colors from the image and create a color palette visualization
+
+# Extract dominant colors (default: 6 colors) using the extract_dominant_colors function
+# Set num_colors=6
+print("\nExtracting dominant colors...")
+num_colors = 6
+
+
+# Create a visualization of the color palette using the create_color_palette function
+# Set cell_size=100
+print("\nCreating color palette visualization...")
+
+# Save the color palette visualization to a file using the save_image function
+output_path = './image/color_palette.jpg'
+
+
+# Display the color palette visualization using the display_image function
+# Use the output_path './image/color_palette.jpg' and window name 'Dominant Color Palette'
+print("\nDisplaying the color palette (press any key to close)")
